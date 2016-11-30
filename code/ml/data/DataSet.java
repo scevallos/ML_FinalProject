@@ -227,7 +227,7 @@ public class DataSet {
 	 * Generates a "new" training data sets by sampling with replacement from
 	 * the original data set
 	 */
-	public DataSet getNewSet() {
+	private DataSet getNewSet() {
 		// ArrayList where new examples will be put
 		ArrayList<Example> newData = new ArrayList<Example>(data.size());
 
