@@ -248,4 +248,22 @@ public class DataSet {
 
 		return newSet;
 	}
+
+	/**
+	 * Generates m "new" data sets via method above.
+	 * 
+	 * @param m
+	 *            num data sets to generate
+	 * @return
+	 */
+	public ArrayList<DataSet> getNewSets(int m) {
+		// ArrayList where the new data sets will be put
+		ArrayList<DataSet> dataSets = new ArrayList<DataSet>(m);
+
+		// Generate m new data sets
+		for (int i = 0; i < m; i++)
+			dataSets.add(getNewSet());
+
+		return dataSets;
+	}
 }
