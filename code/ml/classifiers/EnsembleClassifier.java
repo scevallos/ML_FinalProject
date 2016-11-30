@@ -4,22 +4,29 @@ import java.util.ArrayList;
 
 import ml.data.DataSet;
 import ml.data.Example;
+import ml.utils.HashMapCounter;
 
 public class EnsembleClassifier implements Classifier {
-	
+
 	public static final int DT = 0;
 	public static final int KNN = 1;
-	
+
 	// ArrayList holding the classifiers to be used
 	private ArrayList<Classifier> classifiers;
-	
-	public EnsembleClassifier(int[] classifiersToUse){
+
+	/**
+	 * Ensemble classifier
+	 * 
+	 * @param classifiersToUse
+	 */
+	public EnsembleClassifier(int[] classifiersToUse) {
+
 		// Initialize the ArrayList to whatever size it needs
 		classifiers = new ArrayList<Classifier>(classifiersToUse.length);
-		
+
 		// Loop through the input array, seeing which classifiers to use
-		for(int i = 0; i < classifiersToUse.length; i++){
-			switch (classifiersToUse[i]){
+		for (int i = 0; i < classifiersToUse.length; i++) {
+			switch (classifiersToUse[i]) {
 			case 0:
 				DecisionTreeClassifier dt = new DecisionTreeClassifier();
 				classifiers.add(dt);
@@ -32,22 +39,51 @@ public class EnsembleClassifier implements Classifier {
 		}
 	}
 
-	@Override
+	/**
+	 * (BAGGING) Trains each classifier being used via its respective train
+	 * method on its respective data set
+	 * 
+	 * @param data
+	 */
 	public void train(DataSet data) {
-		// TODO Auto-generated method stub
-		
+		// Gets the new data sets via bagging method
+		ArrayList<DataSet> sets = data.getNewSets(classifiers.size());
+
+		// Trains each classifier on its respective data set
+		for (int i = 0; i < classifiers.size(); i++)
+			classifiers.get(i).train(sets.get(i));
+
 	}
 
-	@Override
 	public double classify(Example example) {
-		// TODO Auto-generated method stub
-		return 0;
+		// Used to keep count of 
+		HashMapCounter<Double> predCount = new HashMapCounter<Double>();
+
+		for (Classifier c : classifiers)
+			predCount.increment(c.classify(example));
+		
+		// Sort them from most to least occurrences, and get the most occurring one
+		return predCount.sortedEntrySet().get(0).getKey();
 	}
 
 	@Override
 	public double confidence(Example example) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	public static void main(String[] args){
+		HashMapCounter<Double> c = new HashMapCounter<Double>();
+		c.increment(1.0);
+//		c.increment(1.0);
+		c.increment(0.0);
+//		c.increment(0.0);
+//		c.increment(1.0);
+//		c.increment(1.0);
+//		c.increment(0.0);
+		// 1.0 : 4, 0.0 : 3
+		System.out.println(c.sortedEntrySet());
+		System.out.println(c.sortedEntrySet().get(0).getKey());
 	}
 
 }
