@@ -56,31 +56,33 @@ public class EnsembleClassifier implements Classifier {
 	}
 
 	public double classify(Example example) {
-		// Used to keep count of 
+		// Used to keep count of
 		HashMapCounter<Double> predCount = new HashMapCounter<Double>();
 
 		for (Classifier c : classifiers)
 			predCount.increment(c.classify(example));
-		
-		// Sort them from most to least occurrences, and get the most occurring one
+
+		// Sort them from most to least occurrences, and get the most occurring
+		// TODO: If evenly split, randomly get the first or get most confident?
 		return predCount.sortedEntrySet().get(0).getKey();
 	}
 
 	@Override
 	public double confidence(Example example) {
-		// TODO Auto-generated method stub
+		// TODO Confidence of which classifier? Any of the ones that predicted
+		// the maj label?
 		return 0;
 	}
-	
-	public static void main(String[] args){
+
+	public static void main(String[] args) {
 		HashMapCounter<Double> c = new HashMapCounter<Double>();
 		c.increment(1.0);
-//		c.increment(1.0);
+		// c.increment(1.0);
 		c.increment(0.0);
-//		c.increment(0.0);
-//		c.increment(1.0);
-//		c.increment(1.0);
-//		c.increment(0.0);
+		// c.increment(0.0);
+		// c.increment(1.0);
+		// c.increment(1.0);
+		// c.increment(0.0);
 		// 1.0 : 4, 0.0 : 3
 		System.out.println(c.sortedEntrySet());
 		System.out.println(c.sortedEntrySet().get(0).getKey());
