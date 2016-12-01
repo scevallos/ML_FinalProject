@@ -18,17 +18,19 @@ import java.util.Set;
  * @author dkauchak
  */
 public class DataSet {
-	private ArrayList<Example> data = new ArrayList<Example>(); // the
-																// data/examples
-																// in this data
-																// set
+	// the data/examples in this data set
+	private ArrayList<Example> data = new ArrayList<Example>();
 	// the mapping from feature indices to the name of the feature
 	private HashMap<Integer, String> featureMap = new HashMap<Integer, String>();
 	private HashSet<Double> labels = new HashSet<Double>();
+	private ArrayList<Double> weights = new ArrayList<Double>();
 
 	// some constants for different file types
 	public static final int CSVFILE = 0;
 	public static final int TEXTFILE = 1;
+
+	private int featureIndex;
+	private int biasFeature = -1;
 
 	/**
 	 * Create a new data set.
@@ -41,7 +43,7 @@ public class DataSet {
 	 */
 	public DataSet(String filename, int fileType) {
 		if (fileType == CSVFILE) {
-			int numColumns = -1;
+			// int numColumns = -1;
 
 			// figure out how many columns there are then call
 			try {
@@ -57,7 +59,7 @@ public class DataSet {
 				// parse the headers
 				String[] headers = line.split(",");
 				int labelIndex = headers.length - 1;
-				int featureIndex = 0;
+				featureIndex = 0;
 
 				for (int i = 0; i < headers.length; i++) {
 					if (i != labelIndex) {
@@ -89,6 +91,7 @@ public class DataSet {
 			Example next = reader.next();
 			data.add(next);
 			labels.add(next.getLabel());
+			weights.add(next.getWeight());
 		}
 	}
 
@@ -100,6 +103,17 @@ public class DataSet {
 	 */
 	public DataSet(HashMap<Integer, String> featureMap) {
 		this.featureMap = new HashMap<Integer, String>(featureMap);
+
+		// figure out what the largest feature is
+		int maxIndex = -1;
+
+		for (Integer index : featureMap.keySet()) {
+			if (index > maxIndex) {
+				maxIndex = index;
+			}
+		}
+
+		featureIndex = maxIndex + 1;
 	}
 
 	/**
@@ -224,6 +238,59 @@ public class DataSet {
 	}
 
 	/**
+	 * Create a complete copy of this dataset with a bias added to the dataset,
+	 * including all of the examples in the dataset. "this" DataSet remains
+	 * unchanged. To add a bias to additional examples outside of the dataset
+	 * (e.g. for classifying), call addBiasFeature on the *new* dataset.
+	 * 
+	 * @param d
+	 * @return
+	 */
+	public DataSet getCopyWithBias() {
+		// get an empty copy
+		DataSet biased = new DataSet(getFeatureMap());
+
+		// set the bias index for the new dataset
+		biased.biasFeature = featureIndex;
+
+		// add the bias to the feature mapping
+		biased.featureMap.put(biased.biasFeature, "bias");
+
+		// iterate through all of the features and add the bias using
+		// addBiasFeature from
+		// the *new* dataset
+		for (Example e : getData()) {
+			biased.addData(biased.addBiasFeature(e));
+		}
+
+		return biased;
+	}
+
+	/**
+	 * Takes as input an example that is *not* already part of this DataSet and
+	 * creates a copy of that Example with a bias added
+	 * 
+	 * @param e
+	 * @return new Example with the bias added
+	 */
+	public Example addBiasFeature(Example e) {
+		if (biasFeature == -1) {
+			throw new RuntimeException(
+					"Called DataSet.addBiasFeature on a DataSet that didn't includ a bias");
+		}
+
+		if (e.getFeatureSet().contains(biasFeature)) {
+			System.err
+					.println("Warning: adding bias feature to an example that already has it.  This *could* be an error");
+		}
+
+		Example biased = new Example(e);
+		biased.addFeature(biasFeature, 1.0);
+
+		return biased;
+	}
+
+	/**
 	 * Generates a "new" training data sets by sampling with replacement from
 	 * the original data set
 	 */
@@ -265,5 +332,12 @@ public class DataSet {
 			dataSets.add(getNewSet());
 
 		return dataSets;
+	}
+
+	/**
+	 * Used to get the weights of all the examples
+	 */
+	public ArrayList<Double> getWeights() {
+		return weights;
 	}
 }
