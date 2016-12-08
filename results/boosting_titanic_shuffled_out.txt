@@ -1,0 +1,85 @@
+array is: 0
+array is: 3
+array is: 1
+array is: 2
+Average train time: 2.565s
+Average test time: 0.0214s
+Average is: 0.27203755868544605
+array is: 0
+array is: 3
+array is: 1
+Average train time: 2.4998s
+Average test time: 0.0217s
+Average is: 0.27611267605633805
+array is: 0
+array is: 3
+array is: 2
+Average train time: 1.9443s
+Average test time: 4.0E-4s
+Average is: 0.26454460093896714
+array is: 0
+array is: 1
+array is: 2
+Average train time: 0.5492s
+Average test time: 0.020300000000000002s
+Average is: 0.26751173708920184
+array is: 3
+array is: 1
+array is: 2
+Average train time: 2.4606999999999997s
+Average test time: 0.0209s
+Average is: 0.2451267605633803
+array is: 3
+array is: 1
+Average train time: 2.4600999999999997s
+Average test time: 0.0202s
+Average is: 0.21999999999999997
+array is: 3
+array is: 2
+Average train time: 1.9839s
+Average test time: 3.0E-4s
+Average is: 0.2702535211267606
+array is: 3
+array is: 0
+Average train time: 1.9339000000000002s
+Average test time: 1.0E-4s
+Average is: 0.29819718309859156
+array is: 1
+array is: 0
+Average train time: 0.5632s
+Average test time: 0.0206s
+Average is: 0.24535211267605636
+array is: 1
+array is: 2
+Average train time: 0.5646s
+Average test time: 0.0212s
+Average is: 0.2532018779342723
+array is: 2
+array is: 0
+Average train time: 0.0053s
+Average test time: 0.0s
+Average is: 0.27055399061032864
+array is: 1
+Average train time: 0.5551s
+Average test time: 0.0202s
+Average is: 0.25757746478873245
+array is: 3
+Average train time: 1.8605s
+Average test time: 1.0E-4s
+Average is: 0.22281690140845073
+array is: 0
+Average train time: 0.0012s
+Average test time: 0.0s
+Average is: 0.29256338028169016
+array is: 2
+Average train time: 0.0043s
+Average test time: 1.0E-4s
+Average is: 0.2984225352112676
+array is: 0
+array is: 0
+array is: 0
+array is: 0
+Average train time: 0.0012s
+Average test time: 0.0s
+Average is: 0.25053521126760564
+done! :)
